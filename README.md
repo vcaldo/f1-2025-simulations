@@ -316,5 +316,3 @@ PILOTOS = {
     'verstappen': {'nome': 'M. Verstappen', 'pontos': 366},
 }
 ```
-#   f 1 - 2 0 2 5 - s i m u l a t i o n s  
- 

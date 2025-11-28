@@ -1,0 +1,214 @@
+"""
+Simulador F1 2025 - Cenários de Empate na Penúltima Etapa
+
+Gera todas as combinações de resultados (sprint + corrida) onde 2 ou 3 pilotos
+terminam empatados em pontos antes da última corrida regular.
+
+Posições fora dos pontos representadas como 99.
+"""
+
+import csv
+from itertools import product
+
+# =============================================================================
+# CONSTANTES DE PONTUAÇÃO
+# =============================================================================
+
+PONTOS_SPRINT = {
+    1: 8, 2: 7, 3: 6, 4: 5, 5: 4, 6: 3, 7: 2, 8: 1,
+    99: 0  # Fora dos pontos
+}
+
+PONTOS_CORRIDA = {
+    1: 25, 2: 18, 3: 15, 4: 12, 5: 10, 6: 8, 7: 6, 8: 4, 9: 2, 10: 1,
+    99: 0  # Fora dos pontos
+}
+
+# Posições possíveis
+POSICOES_SPRINT = [1, 2, 3, 4, 5, 6, 7, 8, 99]
+POSICOES_CORRIDA = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 99]
+
+# =============================================================================
+# DADOS INICIAIS DOS PILOTOS
+# =============================================================================
+
+PILOTOS = {
+    'norris': {'nome': 'L. Norris', 'pontos': 390},
+    'piastri': {'nome': 'O. Piastri', 'pontos': 366},
+    'verstappen': {'nome': 'M. Verstappen', 'pontos': 366},
+}
+
+# =============================================================================
+# FUNÇÕES
+# =============================================================================
+
+def posicoes_validas(pos1, pos2, pos3):
+    """
+    Verifica se a combinação de posições é válida.
+    Dois pilotos não podem ocupar a mesma posição pontuada.
+    Posição 99 (fora dos pontos) pode ser compartilhada.
+    """
+    posicoes = [pos1, pos2, pos3]
+    posicoes_pontuadas = [p for p in posicoes if p != 99]
+    return len(posicoes_pontuadas) == len(set(posicoes_pontuadas))
+
+
+def calcular_pontos(pontos_atuais, pos_sprint, pos_corrida, tabela_sprint, tabela_corrida):
+    """Calcula pontos finais somando pontos da sprint e corrida aos atuais."""
+    return pontos_atuais + tabela_sprint[pos_sprint] + tabela_corrida[pos_corrida]
+
+
+def identificar_empate(pts_norris, pts_piastri, pts_verstappen):
+    """
+    Identifica se há empate na primeira posição.
+    Retorna (tipo_empate, pilotos_empatados) ou (None, None) se não há empate no topo.
+    """
+    pontos = {
+        'Norris': pts_norris,
+        'Piastri': pts_piastri,
+        'Verstappen': pts_verstappen
+    }
+
+    max_pontos = max(pontos.values())
+    lideres = [piloto for piloto, pts in pontos.items() if pts == max_pontos]
+
+    if len(lideres) >= 2:
+        tipo = 'triplo' if len(lideres) == 3 else 'duplo'
+        return tipo, ' & '.join(sorted(lideres))
+
+    return None, None
+
+
+def gerar_cenarios():
+    """
+    Gera todos os cenários válidos onde há empate na primeira posição
+    após a penúltima etapa (sprint + corrida).
+    """
+    cenarios = []
+
+    # Produto cartesiano de todas as posições possíveis para os 3 pilotos
+    # na sprint e na corrida
+    for sprint_nor, sprint_pia, sprint_ver in product(POSICOES_SPRINT, repeat=3):
+        # Validar posições da sprint
+        if not posicoes_validas(sprint_nor, sprint_pia, sprint_ver):
+            continue
+
+        for corrida_nor, corrida_pia, corrida_ver in product(POSICOES_CORRIDA, repeat=3):
+            # Validar posições da corrida
+            if not posicoes_validas(corrida_nor, corrida_pia, corrida_ver):
+                continue
+
+            # Calcular pontos finais
+            pts_norris = calcular_pontos(
+                PILOTOS['norris']['pontos'],
+                sprint_nor, corrida_nor,
+                PONTOS_SPRINT, PONTOS_CORRIDA
+            )
+            pts_piastri = calcular_pontos(
+                PILOTOS['piastri']['pontos'],
+                sprint_pia, corrida_pia,
+                PONTOS_SPRINT, PONTOS_CORRIDA
+            )
+            pts_verstappen = calcular_pontos(
+                PILOTOS['verstappen']['pontos'],
+                sprint_ver, corrida_ver,
+                PONTOS_SPRINT, PONTOS_CORRIDA
+            )
+
+            # Verificar empate na primeira posição
+            tipo_empate, pilotos_empatados = identificar_empate(
+                pts_norris, pts_piastri, pts_verstappen
+            )
+
+            if tipo_empate:
+                cenarios.append({
+                    'sprint_norris': sprint_nor,
+                    'sprint_piastri': sprint_pia,
+                    'sprint_verstappen': sprint_ver,
+                    'corrida_norris': corrida_nor,
+                    'corrida_piastri': corrida_pia,
+                    'corrida_verstappen': corrida_ver,
+                    'pts_norris': pts_norris,
+                    'pts_piastri': pts_piastri,
+                    'pts_verstappen': pts_verstappen,
+                    'tipo_empate': tipo_empate,
+                    'pilotos_empatados': pilotos_empatados
+                })
+
+    return cenarios
+
+
+def exportar_csv(cenarios, arquivo='cenarios_empate.csv'):
+    """Exporta os cenários para arquivo CSV."""
+    if not cenarios:
+        print("Nenhum cenário de empate encontrado.")
+        return
+
+    colunas = [
+        'sprint_norris', 'sprint_piastri', 'sprint_verstappen',
+        'corrida_norris', 'corrida_piastri', 'corrida_verstappen',
+        'pts_norris', 'pts_piastri', 'pts_verstappen',
+        'tipo_empate', 'pilotos_empatados'
+    ]
+
+    with open(arquivo, 'w', newline='', encoding='utf-8') as f:
+        writer = csv.DictWriter(f, fieldnames=colunas)
+        writer.writeheader()
+        writer.writerows(cenarios)
+
+    print(f"Exportado: {arquivo}")
+    print(f"Total de cenários: {len(cenarios)}")
+
+
+def imprimir_resumo(cenarios):
+    """Imprime um resumo dos cenários encontrados."""
+    if not cenarios:
+        print("Nenhum cenário de empate encontrado.")
+        return
+
+    triplos = [c for c in cenarios if c['tipo_empate'] == 'triplo']
+    duplos = [c for c in cenarios if c['tipo_empate'] == 'duplo']
+
+    print("\n" + "=" * 60)
+    print("RESUMO DOS CENÁRIOS DE EMPATE")
+    print("=" * 60)
+    print(f"\nTotal de cenários: {len(cenarios)}")
+    print(f"  - Empates triplos (3 pilotos): {len(triplos)}")
+    print(f"  - Empates duplos (2 pilotos): {len(duplos)}")
+
+    # Contar empates duplos por combinação de pilotos
+    if duplos:
+        print("\nEmpates duplos por combinação:")
+        combinacoes = {}
+        for c in duplos:
+            key = c['pilotos_empatados']
+            combinacoes[key] = combinacoes.get(key, 0) + 1
+        for combo, count in sorted(combinacoes.items()):
+            print(f"  - {combo}: {count} cenários")
+
+    # Mostrar range de pontuações nos empates
+    if cenarios:
+        pontuacoes = set()
+        for c in cenarios:
+            max_pts = max(c['pts_norris'], c['pts_piastri'], c['pts_verstappen'])
+            pontuacoes.add(max_pts)
+        print(f"\nRange de pontuação no empate: {min(pontuacoes)} - {max(pontuacoes)} pts")
+
+
+# =============================================================================
+# EXECUÇÃO PRINCIPAL
+# =============================================================================
+
+if __name__ == '__main__':
+    print("Simulador F1 2025 - Cenários de Empate")
+    print("-" * 40)
+    print("\nClassificação atual:")
+    for key, piloto in PILOTOS.items():
+        print(f"  {piloto['nome']}: {piloto['pontos']} pts")
+
+    print("\nPenúltima etapa: Sprint (máx 8 pts) + Corrida (máx 25 pts)")
+    print("\nGerando cenários...")
+
+    cenarios = gerar_cenarios()
+    imprimir_resumo(cenarios)
+    exportar_csv(cenarios)
