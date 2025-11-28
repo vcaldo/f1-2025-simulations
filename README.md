@@ -6,6 +6,18 @@ Este projeto calcula todas as combinações possíveis de resultados na **penúl
 
 Explore os cenários visualmente com o dashboard Streamlit:
 
+### Rodar com Docker
+
+```bash
+# Clone o repositório
+git clone https://github.com/vcaldo/f1-2025-simulations.git
+# Acesse o diretório
+cd f1-2025-simulations
+# Build e run com docker-compose
+docker-compose up --build
+```
+Acesse: [http://localhost:8501](http://localhost:8501)
+
 ### Rodar Localmente
 
 ```bash
@@ -18,30 +30,7 @@ python f1_simulator.py
 # Iniciar dashboard
 streamlit run app.py
 ```
-
-### Rodar com Docker
-
-```bash
-# Build e run com docker-compose
-docker-compose up --build
-
-# Ou manualmente
-docker build -t f1-dashboard .
-docker run -p 8501:8501 f1-dashboard
-```
-
 Acesse: [http://localhost:8501](http://localhost:8501)
-
-### Deploy no Streamlit Community Cloud (Gratuito)
-
-1. Faça push do repositório para o GitHub
-2. Acesse [share.streamlit.io](https://share.streamlit.io)
-3. Conecte sua conta GitHub
-4. Selecione o repositório `f1-2025-simulations`
-5. Defina `app.py` como arquivo principal
-6. Clique em "Deploy"
-
-O app estará disponível em: `https://<seu-usuario>-f1-2025-simulations.streamlit.app`
 
 ---
 
