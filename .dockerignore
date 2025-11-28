@@ -1,0 +1,31 @@
+# Arquivos Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+
+# Ambientes virtuais
+venv/
+env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Git
+.git/
+.gitignore
+
+# Assets não usados (AVIF)
+assets/no/
+
+# Outros
+*.log
+.DS_Store
+Thumbs.db
