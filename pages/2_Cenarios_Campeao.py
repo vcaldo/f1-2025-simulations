@@ -48,7 +48,7 @@ st.set_page_config(
     page_icon="🏆",
     layout="wide",
 )
-st.warning("⚠️ Válido Apenas para o dia 11 de Novembro de 2025, antes da Sprint Race")
+st.warning("⚠️ Válido Apenas para o dia 29 de Novembro de 2025, antes da Sprint Race")
 # CSS customizado
 st.markdown("""
 <style>
