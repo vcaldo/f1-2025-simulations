@@ -27,13 +27,20 @@ streamlit run app.py
 
 ## 📊 Dashboards
 
-### 🏁 [Cenários de Empate](docs/CENARIOS_EMPATE.md)
+### 🏁 [Cenários de Empate para Última Etapa](docs/CENARIOS_EMPATE.md)
 
 Análise dos **4.666 cenários** onde 2 ou 3 pilotos podem empatar em pontos antes da última corrida do campeonato.
 
 - Simula resultados da penúltima etapa (Sprint + Corrida do Qatar)
 - Identifica combinações de empate duplo e triplo
 - Visualiza quais posições cada piloto precisa para empatar
+
+**Funcionalidades:**
+- 📋 **Tabela de Cenários** — Exibe resultados necessários em Sprint e Corrida para cada piloto
+- 📊 **Gráfico por Combinação** — Distribuição dos cenários por tipo de empate
+- 🎯 **Hierarquia Sunburst** — Visualização hierárquica dos pilotos empatados
+- 🔥 **Heatmaps de Posições** — Mapa de calor mostrando frequência de posições por piloto
+- 📦 **Pontos Ganhos** — Análise dos pontos conquistados em cada cenário
 
 ### 🏆 [Cenários de Campeão](docs/CENARIOS_CAMPEAO.md)
 
@@ -42,7 +49,14 @@ Análise de **~540 mil combinações** de resultados para determinar as chances 
 - Simula 3 eventos restantes (Sprint Qatar, Corrida Qatar, Corrida Abu Dhabi)
 - Calcula probabilidades de título por piloto
 - Considera sistema de desempate da F1 (pontos → vitórias → 2º lugares → 3º lugares)
-- Simulador interativo "What If"
+
+**Funcionalidades:**
+- 🎯 **Como Cada Um Pode Ganhar** — Análise detalhada das combinações que levam cada piloto ao título
+- 📊 **Gráficos de Chances** — Visualização das probabilidades de cada piloto
+- 🏅 **Métodos de Decisão** — Mostra se o título foi decidido por pontos, vitórias ou desempate
+- 📈 **Sunburst Campeão → Método** — Hierarquia visual de campeões e critérios de desempate
+- 📦 **Boxplot de Pontos** — Distribuição de pontos finais por piloto
+- 🎮 **Simulador "What If"** — Interativo para testar cenários customizados de resultados
 
 ---
 

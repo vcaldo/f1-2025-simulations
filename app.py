@@ -26,6 +26,7 @@ st.set_page_config(
 def main():
     # Header
     st.title("🏎️ Simulações F1 2025")
+    st.subheader("Válido Apenas para o dia 11 de Novembro de 2025, antes da Sprint Race")
     st.markdown("Dashboard interativo para simulações do campeonato de Fórmula 1 2025.")
 
     st.markdown("---")
@@ -48,7 +49,6 @@ def main():
         Visualize todos os cenários onde 2 ou 3 pilotos podem empatar
         na liderança antes da última etapa.
 
-        ✅ **Disponível** - Use o menu lateral
         """)
 
     with col2:
@@ -57,7 +57,6 @@ def main():
         Simule as probabilidades de cada piloto conquistar o
         campeonato na última corrida.
 
-        🚧 **Em construção**
         """)
 
     # Footer
