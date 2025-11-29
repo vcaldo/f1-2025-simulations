@@ -16,6 +16,7 @@ from simulations.cenarios_empate.charts import (
     grafico_pontos_ganhos
 )
 from simulations.cenarios_empate.filters import sidebar_filtros, metricas_resumo
+from simulations.cenarios_empate.simulator import ensure_populated
 
 # =============================================================================
 # CONFIGURAÇÃO DA PÁGINA
@@ -29,29 +30,18 @@ st.set_page_config(
 )
 
 # =============================================================================
-# CARREGAMENTO DE DADOS
-# =============================================================================
-
-@st.cache_data
-def carregar_dados():
-    """Carrega e processa o CSV de cenários."""
-    csv_path = Path(__file__).parent.parent / 'simulations' / 'cenarios_empate' / 'data' / 'cenarios_empate.csv'
-    df = pd.read_csv(csv_path)
-    return df
-
-# =============================================================================
 # LAYOUT PRINCIPAL
 # =============================================================================
 
 def main():
+    # Garantir que o banco está populado
+    ensure_populated()
+
     # Header
     st.title("🏁 Cenários de Empate para Última Etapa")
     st.markdown("Visualize todos os cenários onde 2 ou 3 pilotos podem empatar na liderança antes da última etapa.")
 
     st.markdown("---")
-
-    # Carregar dados
-    df = carregar_dados()
 
     # Cards dos pilotos
     st.markdown("### 🏆 Classificação Atual - Candidatos ao Título")
@@ -59,12 +49,12 @@ def main():
 
     st.markdown("---")
 
-    # Aplicar filtros (sidebar)
-    df_filtrado = sidebar_filtros(df)
+    # Aplicar filtros (sidebar) - já retorna DataFrame filtrado do banco
+    df_filtrado = sidebar_filtros()
 
     # Métricas resumo
     st.markdown("### 📊 Resumo dos Cenários")
-    metricas_resumo(df_filtrado, df)
+    metricas_resumo(df_filtrado)
 
     st.markdown("---")
 

@@ -16,8 +16,13 @@ from config.settings import (
     POSICOES_SPRINT, POSICOES_CORRIDA,
     PILOTOS_SIMULADOR
 )
+from database import (
+    get_connection,
+    is_populated,
+    create_cenarios_empate_table
+)
 
-# Caminho padrão para exportar CSV
+# Caminho padrão para exportar CSV (mantido para backup)
 DATA_DIR = Path(__file__).parent / 'data'
 CSV_PATH = DATA_DIR / 'cenarios_empate.csv'
 
@@ -158,6 +163,62 @@ def exportar_csv(cenarios: list[dict], arquivo: Path = None) -> None:
 
     print(f"Exportado: {arquivo}")
     print(f"Total de cenários: {len(cenarios)}")
+
+
+def exportar_db(cenarios: list[dict]) -> None:
+    """
+    Exporta os cenários para o banco de dados DuckDB.
+
+    Args:
+        cenarios: Lista de dicionários com os cenários de empate.
+    """
+    if not cenarios:
+        print("Nenhum cenário de empate encontrado.")
+        return
+
+    conn = get_connection()
+    create_cenarios_empate_table(conn)
+
+    # Limpar tabela antes de inserir
+    conn.execute("DELETE FROM cenarios_empate")
+
+    # Inserir em batch usando executemany
+    colunas = [
+        'sprint_norris', 'sprint_piastri', 'sprint_verstappen',
+        'corrida_norris', 'corrida_piastri', 'corrida_verstappen',
+        'pts_norris', 'pts_piastri', 'pts_verstappen',
+        'ganhos_norris', 'ganhos_piastri', 'ganhos_verstappen',
+        'pontos_empate', 'tipo_empate', 'pilotos_empatados'
+    ]
+
+    placeholders = ', '.join(['?' for _ in colunas])
+    insert_sql = f"INSERT INTO cenarios_empate ({', '.join(colunas)}) VALUES ({placeholders})"
+
+    # Converter lista de dicts para lista de tuplas
+    valores = [tuple(c[col] for col in colunas) for c in cenarios]
+    conn.executemany(insert_sql, valores)
+
+    conn.close()
+    print(f"Exportado para banco de dados: {len(cenarios)} cenários")
+
+
+def ensure_populated() -> None:
+    """
+    Garante que a tabela cenarios_empate está populada.
+
+    Se a tabela não existe ou está vazia, gera os cenários e popula o banco.
+    Deve ser chamada no início da aplicação.
+    """
+    conn = get_connection()
+
+    if not is_populated(conn, 'cenarios_empate'):
+        print("Banco não populado. Gerando cenários de empate...")
+        conn.close()
+        cenarios = gerar_cenarios()
+        exportar_db(cenarios)
+        print("Cenários de empate populados com sucesso!")
+    else:
+        conn.close()
 
 
 def imprimir_resumo(cenarios: list[dict]) -> None:
