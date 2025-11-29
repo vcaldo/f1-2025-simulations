@@ -44,18 +44,18 @@ def main():
 
     with col1:
         st.markdown("""
-        #### 🏁 Cenários de Empate - Qatar
+        #### 🏁 Cenários de Empate para Última Etapa
         Visualize todos os cenários onde 2 ou 3 pilotos podem empatar
-        na liderança após a penúltima etapa (Qatar).
+        na liderança antes da última etapa.
 
         ✅ **Disponível** - Use o menu lateral
         """)
 
     with col2:
         st.markdown("""
-        #### 🏆 Chances de Título - Abu Dhabi
+        #### 🏆 Cenários de Campeão
         Simule as probabilidades de cada piloto conquistar o
-        campeonato na última corrida em Abu Dhabi.
+        campeonato na última corrida.
 
         🚧 **Em construção**
         """)

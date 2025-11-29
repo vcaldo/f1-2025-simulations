@@ -1,5 +1,5 @@
 """
-Dashboard: Chances de Título - Abu Dhabi (Última Etapa)
+Dashboard: Cenários de Campeão
 Simule as probabilidades de cada piloto conquistar o campeonato.
 
 🚧 Em construção
@@ -15,7 +15,7 @@ from components.driver_card import cards_pilotos
 # =============================================================================
 
 st.set_page_config(
-    page_title="Chances de Título - Abu Dhabi | F1 2025",
+    page_title="Cenários de Campeão | F1 2025",
     page_icon="🏎️",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -27,8 +27,8 @@ st.set_page_config(
 
 def main():
     # Header
-    st.title("🏆 Chances de Título - Abu Dhabi")
-    st.markdown("Simule as probabilidades de cada piloto conquistar o campeonato na última corrida em Abu Dhabi.")
+    st.title("🏆 Cenários de Campeão")
+    st.markdown("Simule as probabilidades de cada piloto conquistar o campeonato na última corrida.")
 
     st.markdown("---")
 
@@ -46,7 +46,6 @@ def main():
 
     - 📊 Simular diferentes resultados na última corrida
     - 🎲 Calcular probabilidades de cada piloto ser campeão
-    - 🔄 Analisar cenários de desempate
     - 📈 Visualizar todas as combinações possíveis de resultado final
 
     ---

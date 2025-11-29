@@ -1,5 +1,5 @@
 """
-Dashboard: Cenários de Empate - Qatar (Penúltima Etapa)
+Dashboard: Cenários de Empate para Última Etapa
 Visualização interativa dos cenários onde 2 ou 3 pilotos empatam na liderança.
 """
 
@@ -22,7 +22,7 @@ from simulations.cenarios_empate.filters import sidebar_filtros, metricas_resumo
 # =============================================================================
 
 st.set_page_config(
-    page_title="Cenários de Empate - Qatar | F1 2025",
+    page_title="Cenários de Empate | F1 2025",
     page_icon="🏎️",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -45,8 +45,8 @@ def carregar_dados():
 
 def main():
     # Header
-    st.title("🏁 Cenários de Empate - Qatar")
-    st.markdown("Visualize todos os cenários onde 2 ou 3 pilotos podem empatar na liderança após a penúltima etapa (Qatar).")
+    st.title("🏁 Cenários de Empate para Última Etapa")
+    st.markdown("Visualize todos os cenários onde 2 ou 3 pilotos podem empatar na liderança antes da última etapa.")
 
     st.markdown("---")
 
@@ -65,6 +65,30 @@ def main():
     # Métricas resumo
     st.markdown("### 📊 Resumo dos Cenários")
     metricas_resumo(df_filtrado, df)
+
+    st.markdown("---")
+
+    # Tabela de cenários
+    st.markdown("### 📋 Tabela de Cenários")
+
+    # Configurar colunas para exibição
+    colunas_exibir = [
+        'tipo_empate', 'pilotos_empatados', 'pontos_empate',
+        'sprint_norris', 'corrida_norris', 'pts_norris',
+        'sprint_piastri', 'corrida_piastri', 'pts_piastri',
+        'sprint_verstappen', 'corrida_verstappen', 'pts_verstappen'
+    ]
+
+    colunas_disponiveis = [c for c in colunas_exibir if c in df_filtrado.columns]
+
+    st.dataframe(
+        df_filtrado[colunas_disponiveis].head(100),
+        use_container_width=True,
+        hide_index=True
+    )
+
+    if len(df_filtrado) > 100:
+        st.caption(f"Exibindo 100 de {len(df_filtrado)} cenários. Use os filtros para refinar.")
 
     st.markdown("---")
 
@@ -106,30 +130,6 @@ def main():
             st.plotly_chart(grafico_pontos_ganhos(df_filtrado), use_container_width=True)
         else:
             st.warning("Dados de pontos ganhos não disponíveis. Regenere o CSV executando o simulador.")
-
-    st.markdown("---")
-
-    # Tabela de cenários
-    st.markdown("### 📋 Tabela de Cenários")
-
-    # Configurar colunas para exibição
-    colunas_exibir = [
-        'tipo_empate', 'pilotos_empatados', 'pontos_empate',
-        'sprint_norris', 'corrida_norris', 'pts_norris',
-        'sprint_piastri', 'corrida_piastri', 'pts_piastri',
-        'sprint_verstappen', 'corrida_verstappen', 'pts_verstappen'
-    ]
-
-    colunas_disponiveis = [c for c in colunas_exibir if c in df_filtrado.columns]
-
-    st.dataframe(
-        df_filtrado[colunas_disponiveis].head(100),
-        use_container_width=True,
-        hide_index=True
-    )
-
-    if len(df_filtrado) > 100:
-        st.caption(f"Exibindo 100 de {len(df_filtrado)} cenários. Use os filtros para refinar.")
 
     # Footer
     st.markdown("---")

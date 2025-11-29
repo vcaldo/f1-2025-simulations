@@ -1,0 +1,14 @@
+[[pages]]
+path = "app.py"
+name = "Simulações F1 2025"
+icon = "🏎️"
+
+[[pages]]
+path = "pages/1_Cenarios_Empate.py"
+name = "Cenários de Empate"
+icon = "🏁"
+
+[[pages]]
+path = "pages/2_Cenarios_Campeao.py"
+name = "Cenários de Campeão"
+icon = "🏆"
