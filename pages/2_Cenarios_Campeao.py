@@ -47,8 +47,9 @@ st.set_page_config(
     page_title="Cenários de Campeão | F1 2025",
     page_icon="🏆",
     layout="wide",
-)
 
+)
+st.warning("⚠️ Válido Apenas para o dia 11 de Novembro de 2025, antes da Sprint Race")
 # CSS customizado
 st.markdown("""
 <style>
