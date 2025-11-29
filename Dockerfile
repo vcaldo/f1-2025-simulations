@@ -8,10 +8,13 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copia código e assets
+# Copia estrutura modular do projeto
 COPY app.py .
-COPY f1_simulator.py .
-COPY cenarios_empate.csv .
+COPY config/ ./config/
+COPY components/ ./components/
+COPY utils/ ./utils/
+COPY simulations/ ./simulations/
+COPY pages/ ./pages/
 COPY assets/ ./assets/
 COPY .streamlit/ ./.streamlit/
 
