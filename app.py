@@ -26,7 +26,7 @@ st.set_page_config(
 def main():
     # Header
     st.title("🏎️ Simulações F1 2025")
-    st.subheader("Válido Apenas para o dia 11 de Novembro de 2025, antes da Sprint Race")
+    st.warning("⚠️ Válido Apenas para o dia 11 de Novembro de 2025, antes da Sprint Race")
     st.markdown("Dashboard interativo para simulações do campeonato de Fórmula 1 2025.")
 
     st.markdown("---")
