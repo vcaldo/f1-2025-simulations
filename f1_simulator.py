@@ -121,6 +121,12 @@ def gerar_cenarios():
             )
 
             if tipo_empate:
+                # Calcular pontos ganhos na etapa
+                ganhos_norris = PONTOS_SPRINT[sprint_nor] + PONTOS_CORRIDA[corrida_nor]
+                ganhos_piastri = PONTOS_SPRINT[sprint_pia] + PONTOS_CORRIDA[corrida_pia]
+                ganhos_verstappen = PONTOS_SPRINT[sprint_ver] + PONTOS_CORRIDA[corrida_ver]
+                pontos_empate = max(pts_norris, pts_piastri, pts_verstappen)
+
                 cenarios.append({
                     'sprint_norris': sprint_nor,
                     'sprint_piastri': sprint_pia,
@@ -131,6 +137,10 @@ def gerar_cenarios():
                     'pts_norris': pts_norris,
                     'pts_piastri': pts_piastri,
                     'pts_verstappen': pts_verstappen,
+                    'ganhos_norris': ganhos_norris,
+                    'ganhos_piastri': ganhos_piastri,
+                    'ganhos_verstappen': ganhos_verstappen,
+                    'pontos_empate': pontos_empate,
                     'tipo_empate': tipo_empate,
                     'pilotos_empatados': pilotos_empatados
                 })
@@ -148,7 +158,8 @@ def exportar_csv(cenarios, arquivo='cenarios_empate.csv'):
         'sprint_norris', 'sprint_piastri', 'sprint_verstappen',
         'corrida_norris', 'corrida_piastri', 'corrida_verstappen',
         'pts_norris', 'pts_piastri', 'pts_verstappen',
-        'tipo_empate', 'pilotos_empatados'
+        'ganhos_norris', 'ganhos_piastri', 'ganhos_verstappen',
+        'pontos_empate', 'tipo_empate', 'pilotos_empatados'
     ]
 
     with open(arquivo, 'w', newline='', encoding='utf-8') as f:
