@@ -49,9 +49,9 @@ st.set_page_config(
     layout="wide",
 
 )
-st.warning("⚠️ Válido Apenas para o dia 11 de Novembro de 2025, antes da Sprint Race")
 # CSS customizado
 st.markdown("""
+st.warning("⚠️ Válido Apenas para o dia 11 de Novembro de 2025, antes da Sprint Race")
 <style>
     .stMetric {
         background: #F5F5F5;
