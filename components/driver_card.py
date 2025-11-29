@@ -6,11 +6,12 @@ Exibe foto, nome e pontuação de um piloto.
 import streamlit as st
 from pathlib import Path
 from config.settings import CORES
+import base64
 
 
 def card_piloto(nome: str, dados: dict, col):
     """
-    Renderiza card de piloto com foto e informações.
+    Renderiza card de piloto com foto e informações em layout horizontal.
 
     Args:
         nome: Nome do piloto
@@ -18,24 +19,32 @@ def card_piloto(nome: str, dados: dict, col):
         col: Coluna do Streamlit onde renderizar
     """
     with col:
-        # Foto do piloto
+        # Carregar e codificar imagem em base64
         foto_path = Path(dados['foto'])
+        img_base64 = ""
         if foto_path.exists():
-            st.image(str(foto_path), width=150)
+            with open(foto_path, "rb") as img_file:
+                img_base64 = base64.b64encode(img_file.read()).decode()
 
-        # Nome e pontos com estilo
+        # Card com layout horizontal (foto à esquerda, info à direita)
         st.markdown(f"""
         <div style="
             background: {dados['cor']}40;
             padding: 15px;
             border-radius: 10px;
             border-left: 4px solid {dados['cor']};
-            text-align: center;
+            display: flex;
+            align-items: center;
+            gap: 15px;
         ">
-            <h3 style="margin: 0; color: {CORES['texto']};">{nome}</h3>
-            <p style="font-size: 24px; font-weight: bold; margin: 5px 0; color: {CORES['texto']};">
-                {dados['pontos_iniciais']} pts
-            </p>
+            <img src="data:image/avif;base64,{img_base64}"
+                 style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px; flex-shrink: 0;">
+            <div style="flex: 1; text-align: center;">
+                <h3 style="margin: 0; color: {CORES['texto']};">{nome}</h3>
+                <p style="font-size: 24px; font-weight: bold; margin: 5px 0; color: {CORES['texto']};">
+                    {dados['pontos_iniciais']} pts
+                </p>
+            </div>
         </div>
         """, unsafe_allow_html=True)
 
