@@ -13,6 +13,7 @@ COPY app.py .
 COPY config/ ./config/
 COPY components/ ./components/
 COPY utils/ ./utils/
+COPY database/ ./database/
 COPY simulations/ ./simulations/
 COPY pages/ ./pages/
 COPY assets/ ./assets/
